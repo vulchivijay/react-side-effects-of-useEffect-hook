@@ -25,7 +25,7 @@ function App() {
         position.coords.latitude,
         position.coords.longitude);
       setAvailablePlaces(sortedPlaces);
-      if (availablePlaces.length === 0) {
+      if (sortedPlaces.length === 0) {
         setAvailablePlaces(AVAILABLE_PLACES);
       }
     });
