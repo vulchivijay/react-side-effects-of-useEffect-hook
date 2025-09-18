@@ -176,13 +176,20 @@ header p {
 .button:focus {
   background-color: #3e0505;
 }
+.button-text:hover,
+.button-text:focus {
+  background-color: #3e0505;
+  color: #fff;
+}
 
 .button-text {
-  background: transparent;
-  border: none;
-  padding: 0;
+  cursor: pointer;
+  padding: 0.5rem 1.5rem;
   font-family: 'Raleway', sans-serif;
   font-size: 1rem;
+  border-radius: 4px;
+  border: ipx solid rgba(0, 0, 0, 0.4);
+  background: transparent;
   color: #5d0909;
 }
 
@@ -204,6 +211,10 @@ header p {
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   animation: slide-down-fade-in 0.3s ease-out forwards;
+}
+
+progress {
+  width: 100%;
 }
 
 @keyframes slide-down-fade-in {
