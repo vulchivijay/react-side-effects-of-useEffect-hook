@@ -7,16 +7,16 @@ import DeleteConfirmation from './components/DeleteConfirmation.jsx';
 import logoImg from './assets/logo.png';
 import { sortPlacesByDistance } from './loc';
 
+const localStoredIds = JSON.parse(localStorage.getItem('selectedPlaces')) || [];
+const localStoredPlaces = localStoredIds.map(id =>
+  AVAILABLE_PLACES.find(place => place.id === id)
+);
+
 function App() {
-  const localStoredIds = JSON.parse(localStorage.getItem('selectedPlaces')) || [];
-  const localStoredPlaces = localStoredIds.map(id =>
-    AVAILABLE_PLACES.find(place => place.id === id)
-  );
-  
-  const modal = useRef();
   const selectedPlace = useRef();
   const [pickedPlaces, setPickedPlaces] = useState(localStoredPlaces);
   const [availablePlaces, setAvailablePlaces] = useState([]);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(position => {
@@ -26,15 +26,18 @@ function App() {
         position.coords.longitude);
       setAvailablePlaces(sortedPlaces);
     });
+    if (availablePlaces.length === 0) {
+      availablePlaces = AVAILABLE_PLACES;
+    }
   }, []);
 
   function handleStartRemovePlace(id) {
-    modal.current.open();
+    setModalIsOpen(true);
     selectedPlace.current = id;
   }
 
   function handleStopRemovePlace() {
-    modal.current.close();
+    setModalIsOpen(false);
   }
 
   function handleSelectPlace(id) {
@@ -56,7 +59,7 @@ function App() {
     setPickedPlaces((prevPickedPlaces) =>
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
     );
-    modal.current.close();
+    setModalIsOpen(false);
 
     const storedIds = JSON.parse(localStorage.getItem('selectedPlaces')) || [];
     localStorage.setItem('selectedPlaces', JSON.stringify(storedIds.filter((id) => id !== selectedPlace.current)));
@@ -64,7 +67,7 @@ function App() {
 
   return (
     <>
-      <Modal ref={modal}>
+      <Modal open={modalIsOpen}>
         <DeleteConfirmation
           onCancel={handleStopRemovePlace}
           onConfirm={handleRemovePlace}
