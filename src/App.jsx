@@ -25,10 +25,10 @@ function App() {
         position.coords.latitude,
         position.coords.longitude);
       setAvailablePlaces(sortedPlaces);
+      if (availablePlaces.length === 0) {
+        setAvailablePlaces(AVAILABLE_PLACES);
+      }
     });
-    if (availablePlaces.length === 0) {
-      setAvailablePlaces(AVAILABLE_PLACES);
-    }
   }, []);
 
   function handleStartRemovePlace(id) {
